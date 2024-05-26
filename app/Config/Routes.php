@@ -17,4 +17,7 @@ $routes->get('reset-password/(:segment)', 'SignUp::resetPasswordForm/$1');
 $routes->post('sign-up/update-password', 'SignUp::updatePassword');
 $routes->get('verify-email/(:segment)', 'SignUp::verifyEmail/$1');
 $routes->get('verify-email/(:any)', 'SignUp::verifyEmail/$1');
+$routes->get('lock-screen', 'LockScreen::index');
+$routes->post('lock-screen/unlock', 'LockScreen::unlock');
+
 
