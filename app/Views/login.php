@@ -12,6 +12,12 @@
     <div class="card">
         <div class="card-body">
             <h2 class="text-primary">Login</h2>
+            <?php if (session()->get('success')): ?>
+                <div class="alert alert-success"><?= session()->get('success') ?></div>
+            <?php endif; ?>
+            <?php if (session()->get('error')): ?>
+                <div class="alert alert-danger"><?= session()->get('error') ?></div>
+            <?php endif; ?>
             <form action="<?= base_url('sign-up/authenticate') ?>" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>

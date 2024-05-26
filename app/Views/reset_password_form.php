@@ -12,6 +12,9 @@
     <div class="card">
         <div class="card-body">
             <h2 class="text-primary">Reset Password</h2>
+            <?php if (session()->get('error')): ?>
+                <div class="alert alert-danger"><?= session()->get('error') ?></div>
+            <?php endif; ?>
             <form action="<?= base_url('sign-up/update-password') ?>" method="post">
                 <input type="hidden" name="token" value="<?= $token ?>">
                 <input type="hidden" name="email" value="<?= $email ?>">

@@ -27,4 +27,19 @@ class UserModel extends Model
     {
         $this->where('Email', $email)->set('Status', 1)->update();
     }
+    
+    public function storeResetToken($email, $token)
+    {
+        return $this->where('Email', $email)->set('Reset_Token', $token)->update();
+    }
+
+    public function getUserByResetToken($token)
+    {
+        return $this->where('Reset_Token', $token)->first();
+    }
+
+    public function updatePassword($email, $newPassword)
+    {
+        return $this->where('Email', $email)->set('Password', $newPassword)->set('Reset_Token', null)->update();
+    }
 }

@@ -12,7 +12,14 @@
     <div class="card">
         <div class="card-body">
             <h2 class="text-primary">Sign Up</h2>
+            <?php if (session()->get('success')): ?>
+                <div class="alert alert-success"><?= session()->get('success') ?></div>
+            <?php endif; ?>
+            <?php if (session()->get('error')): ?>
+                <div class="alert alert-danger"><?= session()->get('error') ?></div>
+            <?php endif; ?>
             <form action="<?= base_url('sign-up/register') ?>" method="post">
+            <?php echo base_url('sign-up/register'); // Debug line ?>
                 <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input type="text" class="form-control" id="first_name" name="First_Name" required>

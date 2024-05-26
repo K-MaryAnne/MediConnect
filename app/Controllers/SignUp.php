@@ -8,23 +8,29 @@ class SignUp extends BaseController
 {
     public function index()
     {
-        return view('sign_up');
+        $data['title'] = 'Sign Up';
+        return view('sign_up', $data);
     }
 
     public function register()
     {
         $data = $this->request->getPost();
-
         $model = new UserModel();
         $data['Password'] = password_hash($data['Password'], PASSWORD_DEFAULT);
         $data['Verification_Token'] = bin2hex(random_bytes(16));
 
         if ($model->save($data)) {
             $this->sendVerificationEmail($data['Email'], $data['Verification_Token']);
-            return redirect()->to('login')->with('success', 'Registration successful. Please check your email to activate your account.');
+            return redirect()->to('/login')->with('success', 'Registration successful. Please check your email to activate your account.');
         } else {
             return redirect()->back()->with('error', 'Registration failed. Please try again.');
         }
+    }
+
+    public function loginForm()
+    {
+        $data['title'] = 'Login';
+        return view('login', $data);
     }
 
     public function authenticate()
@@ -56,15 +62,16 @@ class SignUp extends BaseController
         $data = [
             'id' => $user['User_id'],
             'email' => $user['Email'],
+            'isLoggedIn' => true,
         ];
 
-        session()->set('user', $data);
-        session()->set('isLoggedIn', true);
+        session()->set($data);
     }
 
     public function forgotPasswordForm()
     {
-        return view('forgot_password_form');
+        $data['title'] = 'Forgot Password';
+        return view('forgot_password_form', $data);
     }
 
     public function sendResetPasswordEmail()
@@ -124,10 +131,15 @@ class SignUp extends BaseController
         $user = $model->where('Reset_Token', $token)->first();
 
         if (!$user) {
-            return redirect()->to('forgot-password')->with('error', 'Invalid reset token.');
+            return redirect()->to('/forgot-password')->with('error', 'Invalid reset token.');
         }
 
-        return view('reset_password_form', ['token' => $token, 'email' => $user['Email']]);
+        $data = [
+            'title' => 'Reset Password',
+            'token' => $token,
+            'email' => $user['Email']
+        ];
+        return view('reset_password_form', $data);
     }
 
     public function updatePassword()
@@ -145,13 +157,13 @@ class SignUp extends BaseController
         $user = $model->where('Reset_Token', $resetToken)->first();
 
         if (!$user || $user['Email'] !== $email) {
-            return redirect()->to('forgot-password')->with('error', 'Invalid reset token.');
+            return redirect()->to('/forgot-password')->with('error', 'Invalid reset token.');
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $model->update($user['User_id'], ['Password' => $hashedPassword, 'Reset_Token' => null]);
 
-        return redirect()->to('login')->with('success', 'Password updated successfully. You can now login.');
+        return redirect()->to('/login')->with('success', 'Password updated successfully. You can now login.');
     }
 
     private function sendVerificationEmail($email, $token)
@@ -187,13 +199,13 @@ class SignUp extends BaseController
     public function verifyEmail($token)
     {
         $model = new UserModel();
-        $user = $model->getUserEmailByToken($token);
+        $user = $model->where('Verification_Token', $token)->first();
 
         if ($user) {
-            $model->activateUser($user['Email']);
-            return redirect()->to('login')->with('success', 'Account activated successfully. You can now login.');
+            $model->update($user['User_id'], ['Status' => 1, 'Verification_Token' => null]);
+            return redirect()->to('/login')->with('success', 'Account activated successfully. You can now login.');
         } else {
-            return redirect()->to('login')->with('error', 'Invalid verification token.');
+            return redirect()->to('/login')->with('error', 'Invalid verification token.');
         }
     }
 }

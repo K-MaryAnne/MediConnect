@@ -12,6 +12,9 @@
     <div class="card">
         <div class="card-body">
             <h2 class="text-primary">Forgot Password</h2>
+            <?php if (session()->get('error')): ?>
+                <div class="alert alert-danger"><?= session()->get('error') ?></div>
+            <?php endif; ?>
             <form action="<?= base_url('sign-up/send-reset-password-email') ?>" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>
