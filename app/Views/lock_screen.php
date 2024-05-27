@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= base_url('public/css/lockscreen.css') ?>">
     <title>Lock Screen</title>
-    
 </head>
 <body>
     <div id="lock-screen-popup" class="lock-screen-popup">
         <div class="lock-screen-popup-content">
             <h3>Medical App - Unlock</h3>
-            <form action="/lock-screen/unlock" method="post">
+            <?php if(session()->getFlashdata('error')): ?>
+                <p style="color:red;"><?= session()->getFlashdata('error') ?></p>
+            <?php endif; ?>
+            <form action="<?= base_url('/lock-screen/unlock') ?>" method="post">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required><br>
                 <label for="password">Password:</label>
@@ -21,12 +23,10 @@
         </div>
     </div>
     <script>
-       
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('lock-screen-popup').style.display = 'block';
         });
 
-     
         let inactivityTime = function () {
             let time;
             window.onload = resetTimer;

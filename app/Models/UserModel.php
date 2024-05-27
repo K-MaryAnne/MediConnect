@@ -25,7 +25,7 @@ class UserModel extends Model
 
     public function activateUser($email)
     {
-        $this->where('Email', $email)->set('Status', 1)->update();
+        return $this->where('Email', $email)->set('Status', 1)->set('Verification_Token', null)->update();
     }
     
     public function storeResetToken($email, $token)
