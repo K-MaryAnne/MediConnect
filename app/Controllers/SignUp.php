@@ -183,11 +183,12 @@ class SignUp extends BaseController
         $emailService = \Config\Services::email();
         $emailService->initialize($emailConfig);
 
+        $message = view('verification_email', ['token' => $token, 'email' => $email]);
+        
         $emailService->setTo($email);
         $emailService->setSubject('Account Verification');
-        $message = "<p>Please click the link below to verify your account:</p>";
-        $message .= "<p><a href='".base_url('verify-email/' . $token)."'>Verify Email</a></p>";
         $emailService->setMessage($message);
+
 
         if (!$emailService->send()) {
             log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
