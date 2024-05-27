@@ -9,7 +9,8 @@
 <body>
     <div class="email-container">
         <div class="header">
-             <img src="<?= $baseUrl ?>/public/images/Logo.png" alt="Logo">
+        <img src="<?= base_url('public/images/Logo.png') ?>" alt="Logo">
+
         </div>
         <div class="content">
             <h1>Welcome to MediConnect!</h1>

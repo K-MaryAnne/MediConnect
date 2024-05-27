@@ -21,5 +21,6 @@ $routes->post('/lock-screen/unlock', 'LockScreen::unlock');
 $routes->get('/lock-screen/unlock', 'LockScreen::index');
 $routes->get('/logout', 'LockScreen::logout');
 $routes->get('/dashboard', 'Dashboard::index');
+$routes->get('verify-email', 'SignUp::verifyEmail');
 
 

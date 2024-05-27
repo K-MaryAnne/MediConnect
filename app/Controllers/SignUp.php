@@ -183,7 +183,11 @@ class SignUp extends BaseController
         $emailService = \Config\Services::email();
         $emailService->initialize($emailConfig);
 
-        $message = view('verification_email', ['token' => $token, 'email' => $email]);
+        $activationLink = base_url("verify-email?token=" . urlencode($token));
+
+        $message = view('verification_email', ['activationLink' => $activationLink, 'email' => $email]);
+
+        //$message = view('verification_email', ['token' => $token, 'email' => $email]);
         
         $emailService->setTo($email);
         $emailService->setSubject('Account Verification');
@@ -197,8 +201,15 @@ class SignUp extends BaseController
         return true;
     }
 
-    public function verifyEmail($token)
+    public function verifyEmail()
     {
+        $token = $this->request->getGet('token');
+
+        if (!$token) {
+            // Handle case where no token is provided
+            return redirect()->to('/login')->with('error', 'Verification token not found.');
+        }
+
         $model = new UserModel();
         $user = $model->where('Verification_Token', $token)->first();
 
