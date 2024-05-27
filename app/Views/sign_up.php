@@ -49,7 +49,7 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="Password" required>
                     <div id="passwordGuidelines">
-                        <p class="guideline" id="minLength">Password must have at 8 characters</p>
+                        <p class="guideline" id="minLength">Password must have at least 8 characters</p>
                         <p class="guideline" id="upperCase">Password must have at least one uppercase letter</p>
                         <p class="guideline" id="lowerCase">Password must have at least one lowercase letter</p>
                         <p class="guideline" id="number">Password must have at least one number</p>
