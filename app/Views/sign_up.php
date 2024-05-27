@@ -11,6 +11,14 @@
         .error-message {
             color: red;
         }
+        .guideline {
+            color: red;
+            font-size: 12px;
+            margin: 2px 0;
+        }
+        .guideline.valid {
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +48,14 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="Password" required>
+                    <div id="passwordGuidelines">
+                        <p class="guideline" id="minLength">Password must have at 8 characters</p>
+                        <p class="guideline" id="upperCase">Password must have at least one uppercase letter</p>
+                        <p class="guideline" id="lowerCase">Password must have at least one lowercase letter</p>
+                        <p class="guideline" id="number">Password must have at least one number</p>
+                        <p class="guideline" id="specialChar">Password must have at least one special character (e.g., @, #, etc.)</p>
+                    </div>
+
                 </div>
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
@@ -57,7 +73,7 @@
                     <label for="age">Age</label>
                     <input type="number" class="form-control" id="age" name="Age" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button type="submit" class="btn btn-primary" id="submitButton" disabled>Sign Up</button>
             </form>
         </div>
     </div>
@@ -130,6 +146,24 @@
                     event.preventDefault();
                     alert("Please enter a valid phone number.");
                 }
+            });
+
+            $('#password').on('input', function() {
+                var password = $(this).val();
+                var minLength = password.length >= 8;
+                var upperCase = /[A-Z]/.test(password);
+                var lowerCase = /[a-z]/.test(password);
+                var specialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                var number = /[0-9]/.test(password);
+
+                $('#minLength').toggleClass('valid', minLength);
+                $('#upperCase').toggleClass('valid', upperCase);
+                $('#lowerCase').toggleClass('valid', lowerCase);
+                $('#specialChar').toggleClass('valid', specialChar);
+                $('#number').toggleClass('valid', number);
+
+                var allValid = minLength && upperCase && lowerCase && specialChar && number;
+                $('#submitButton').prop('disabled', !allValid);
             });
         });
     </script>
