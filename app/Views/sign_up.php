@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= base_url('public/css/style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,8 +24,7 @@
             <?php if (session()->get('error')): ?>
                 <div class="alert alert-danger"><?= session()->get('error') ?></div>
             <?php endif; ?>
-            <form action="<?= base_url('sign-up/register') ?>" method="post">
-                <?php echo base_url('sign-up/register'); // Debug line ?>
+            <form id="signupForm" action="<?= base_url('sign-up/register') ?>" method="post">
                 <div class="form-group">
                     <label for="first_name">First Name</label>
                     <input type="text" class="form-control" id="first_name" name="First_Name" required>
@@ -40,6 +44,7 @@
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
                     <input type="tel" class="form-control" id="phone_number" name="Phone_Number" required>
+                    <small id="phoneHelp" class="form-text"></small>
                 </div>
                 <div class="form-group">
                     <label for="gender">Gender</label>
@@ -75,21 +80,12 @@
                         callback(countryCode);
                     });
                 },
-                var iti = window.intlTelInput(input, {
-        initialCountry: "auto",
-        autoFormat: false,
-        geoIpLookup: function(callback) {
-        $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
-            var countryCode = (resp && resp.country) ? resp.country : "us";
-            callback(countryCode);
-        });
-        },
                 utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
             });
 
             function updateMask() {
                 var countryData = iti.getSelectedCountryData();
-                var maskPattern = "+" + countryData.dialCode + " 999 999 999"; 
+                var maskPattern = "+" + countryData.dialCode + " 999 999 9999"; 
                 $(input).inputmask("remove");
                 $(input).inputmask({
                     mask: maskPattern,
@@ -101,6 +97,39 @@
             
             input.addEventListener('countrychange', function() {
                 updateMask();
+            });
+
+            function validatePhoneNumber() {
+                var phoneNumber = input.value.replace(/\D/g, ''); // Remove all non-digit characters
+                var isValid = iti.isValidNumber();
+                var minLength = iti.getNumberType() === intlTelInputUtils.numberType.FIXED_LINE ? 10 : 8;
+                var maxLength = iti.getNumberType() === intlTelInputUtils.numberType.MOBILE ? 15 : 10;
+                var errorMsg = "";
+
+                if (phoneNumber.length > 0 && phoneNumber.length < minLength) {
+                    errorMsg = "The phone number is too short.";
+                } else if (phoneNumber.length > maxLength) {
+                    errorMsg = "The phone number is too long.";
+                } else if (phoneNumber.length > 0 && !isValid) {
+                    errorMsg = "The phone number is invalid.";
+                }
+
+                var phoneHelp = document.getElementById('phoneHelp');
+                phoneHelp.textContent = errorMsg;
+                phoneHelp.className = errorMsg ? 'error-message' : '';
+
+                return isValid && phoneNumber.length >= minLength && phoneNumber.length <= maxLength;
+            }
+
+            input.addEventListener('blur', validatePhoneNumber);
+            input.addEventListener('input', validatePhoneNumber);
+
+            var form = document.getElementById('signupForm');
+            form.addEventListener('submit', function(event) {
+                if (!validatePhoneNumber()) {
+                    event.preventDefault();
+                    alert("Please enter a valid phone number.");
+                }
             });
         });
     </script>
