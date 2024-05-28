@@ -1,6 +1,7 @@
 <?php
 
 use CodeIgniter\Router\RouteCollection;
+use CodeIgniter\Services;
 
 /**
  * @var RouteCollection $routes
@@ -19,7 +20,7 @@ $routes->get('reset-password/(:segment)', 'SignUp::resetPasswordForm/$1');
 $routes->get('/lock-screen', 'LockScreen::index');
 $routes->post('/lock-screen/unlock', 'LockScreen::unlock');
 $routes->get('/lock-screen/unlock', 'LockScreen::index');
-$routes->get('/logout', 'LockScreen::logout');
+$routes->get('/logout', 'Lockscreen::logout');
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('verify-email', 'SignUp::verifyEmail');
 

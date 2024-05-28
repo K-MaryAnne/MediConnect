@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
-use CodeIgniter\Database\Exceptions\DataException;
+use App\Models\UserModel;
 
 class LockScreen extends Controller
 {
@@ -16,24 +16,24 @@ class LockScreen extends Controller
 
     public function unlock()
     {
-        $username = $this->request->getPost('username');
+        $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        $db = \Config\Database::connect();
-        $builder = $db->table('users');
-        $user = $builder->where('Email', $username)->get()->getRow();
+        $model = new UserModel();
+        $user = $model->where('Email', $email)->first();
 
-        if ($user && password_verify($password, $user->Password)) {
+        if ($user && password_verify($password, $user['Password'])) {
             session()->set('logged_in', true);
-            return redirect()->to('/dashboard'); 
+            return redirect()->to('/dashboard');
         } else {
-            return redirect()->to('/lock-screen')->with('error', 'Invalid credentials');
+            session()->setFlashdata('error', 'Invalid credentials');
+            return redirect()->to('/lock-screen');
         }
     }
 
     public function logout()
     {
-        session()->remove('logged_in');
+        session()->destroy();
         return redirect()->to('/login'); // Redirect to login after logout
     }
 }

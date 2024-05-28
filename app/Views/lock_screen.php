@@ -14,8 +14,8 @@
                 <p style="color:red;"><?= session()->getFlashdata('error') ?></p>
             <?php endif; ?>
             <form action="<?= base_url('/lock-screen/unlock') ?>" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" required><br>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required><br>
                 <button type="submit">Unlock</button>
@@ -43,7 +43,7 @@
 
             function resetTimer() {
                 clearTimeout(time);
-                time = setTimeout(lockScreen, 300000); 
+                time = setTimeout(lockScreen, 300000); // 5 minutes
             }
         };
 
