@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?= base_url('public/css/style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
+ 
         .error-message {
             color: red;
         }
@@ -69,10 +70,7 @@
                         <option value="female">Female</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="age">Age</label>
-                    <input type="number" class="form-control" id="age" name="Age" required>
-                </div>
+               
                 <button type="submit" class="btn btn-primary" id="submitButton" disabled>Sign Up</button>
             </form>
         </div>
