@@ -24,6 +24,7 @@ $routes->get('/logout', 'Lockscreen::logout');
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('verify-email', 'SignUp::verifyEmail');
 
-$routes->get('user-profile', 'HealthcareProviderProfileController::index');
+$routes->get('healthprovider-profile', 'HealthcareProviderProfileController::index');
+$routes->get('patient-profile', 'PatientProfileController::index');
 
 

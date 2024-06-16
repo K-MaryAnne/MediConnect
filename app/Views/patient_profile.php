@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Healthcare Provider Profile</title>
+    <title>Patient Profile</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
@@ -74,9 +74,9 @@
         </div>
         <div class="col-md-4">
             <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
-                <div class="col-md-12"><label class="labels">Experience in healthcare</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>
-                <div class="col-md-12"><label class="labels">Additional Details</label><textarea class="form-control" placeholder="additional details"></textarea></div><br>
+                <!-- <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
+                <div class="col-md-12"><label class="labels">Experience in healthcare</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br> -->
+                <div class="col-md-12"><label class="labels">Additional Details</label><textarea class="form-control" placeholder="additional details"></textarea></div>
             </div>
         </div>
     </div>
