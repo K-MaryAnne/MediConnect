@@ -11,10 +11,13 @@ class SignUp extends BaseController
         $data['title'] = 'Sign Up';
         return view('sign_up', $data);
     }
+    // public function index(): Defines the index method, which handles displaying the sign-up form.
+    // $data['title'] = 'Sign Up';: Sets the title variable to "Sign Up".
+    // return view('sign_up', $data);: Loads the sign_up view, passing in the $data array to set the page title.
 
     public function register()
     {
-        $data = $this->request->getPost();
+        $data = $this->request->getPost();  
         $model = new UserModel();
         $data['Password'] = password_hash($data['Password'], PASSWORD_DEFAULT);
         $data['Verification_Token'] = bin2hex(random_bytes(16));
@@ -26,6 +29,12 @@ class SignUp extends BaseController
             return redirect()->back()->with('error', 'Registration failed. Please try again.');
         }
     }
+    /*$data = $this->request->getPost();: Retrieves POST data from the registration form and stores it in $data.$model = new UserModel();: Creates a new instance of UserModel.
+    $data['Password'] = password_hash($data['Password'], PASSWORD_DEFAULT);: Hashes the user's password for security.
+    $data['Verification_Token'] = bin2hex(random_bytes(16));: Generates a random verification token for email verification.
+    if ($model->save($data)): Attempts to save the user data to the database.
+    If successful, calls sendVerificationEmail to send the verification email and redirects to the login page with a success message.
+    If not successful, redirects back to the registration form with an error message. */
 
     public function loginForm()
     {
@@ -56,6 +65,14 @@ class SignUp extends BaseController
             return redirect()->back()->with('error', 'User not found');
         }
     }
+    /*public function authenticate(): Defines the authenticate method, which handles user login.
+    $email = $this->request->getPost('email');: Retrieves the email from the login form.
+    $password = $this->request->getPost('password');: Retrieves the password from the login form.
+    $model = new UserModel();: Creates a new instance of UserModel.
+    $user = $model->where('Email', $email)->first();: Finds the user with the specified email.
+    if ($user): Checks if a user was found.
+    if (password_verify($password, $user['Password'])): Verifies the provided password against the hashed password in the database.
+    if ($user['Status'] == 1): Checks if the user's account is activated. Calls setUserSession to set user session data and redirects to the dashboard. Else, redirects back with an error message indicating the account is not activated. Else, redirects back with an error message indicating an invalid password.Else, redirects back with an error message indicating the user was not found.*/
 
     private function setUserSession($user)
     {
@@ -67,12 +84,17 @@ class SignUp extends BaseController
 
         session()->set($data);
     }
+    /*private function setUserSession($user): Defines the setUserSession method, which sets session data for a logged-in user.
+    $data = [ ... ];: Prepares the session data array. 
+    session()->set($data);: Sets the session data.
+    */
 
     public function forgotPasswordForm()
     {
         $data['title'] = 'Forgot Password';
         return view('forgot_password_form', $data);
-    }
+    } 
+    
 
     public function sendResetPasswordEmail()
     {
