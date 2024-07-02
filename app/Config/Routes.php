@@ -26,6 +26,10 @@ $routes->get('verify-email', 'SignUp::verifyEmail');
 
 $routes->get('healthprovider-profile', 'HealthcareProviderProfileController::index');
 $routes->get('patient-profile', 'PatientProfileController::index');
+$routes->get('patient-profile', 'PatientProfileController::profile');
+$routes->post('patient-profile/editProfile', 'PatientProfileController::editProfile');
+$routes->post('patient-profile/uploadPhoto', 'PatientProfileController::uploadPhoto');
+
 
 $routes->get('admin-dashboard', 'AdminDashboardController::index');
 
