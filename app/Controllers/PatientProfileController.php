@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
 
 class PatientProfileController extends BaseController
@@ -9,6 +10,7 @@ class PatientProfileController extends BaseController
     {
         return view('patient_profile');
     }
+
     public function profile()
     {
         $session = session();
