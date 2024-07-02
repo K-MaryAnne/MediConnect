@@ -19,12 +19,14 @@
                 <li>
                     <a href="#">
                         <span class="icon">
-                            <!-- <ion-icon name="logo-apple"></ion-icon> -->
+                        <div class="user">
+                <img src="imgs/assistance.png" alt="">
+                </div>
                         </span>
                         <span class="title">MediConnect</span>
                     </a>
                 </li>
-
+<!-- 
                 <li>
                     <a href="#">
                         <span class="icon">
@@ -32,7 +34,7 @@
                         </span>
                         <span class="title">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li>
     <a href="<?= base_url('manage-users') ?>">
@@ -54,14 +56,15 @@
 
 
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="help-outline"></ion-icon>
-                        </span>
-                        <span class="title">Help</span>
-                    </a>
-                </li>
+<li>
+    <a href="<?= base_url('stats') ?>">
+        <span class="icon">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+        </span>
+        <span class="title">Stats</span>
+    </a>
+</li>
+
 
                 <li>
     <a href="<?= base_url('admin/profile') ?>">
@@ -74,7 +77,7 @@
 
 
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="lock-closed-outline"></ion-icon>
@@ -90,7 +93,7 @@
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -161,43 +164,50 @@
             </div>
 
 <!-- ================ Nurses List ================= -->
-<div class="details">
-    <div class="recentNurses">
-        <div class="cardHeader">
-            <h2>Nurses</h2>
-            <a href="#" class="btn">View All</a>
+<div class="container mt-5">
+    <h2>Nurses List</h2>
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success">
+            <?= session()->getFlashdata('success') ?>
         </div>
-
-        <table>
-            <thead>
+    <?php endif; ?>
+    <?php if (session()->getFlashdata('error')) : ?>
+        <div class="alert alert-danger">
+            <?= session()->getFlashdata('error') ?>
+        </div>
+    <?php endif; ?>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Specialisation</th>
+                <th>Years of Experience</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($nurses as $nurse) : ?>
                 <tr>
-                    <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Specialisation</td>
-                    <td>Years of Experience</td>
-                    <td>Rating</td>
+                    <td><?= $nurse->User_ID ?></td>
+                    <td><?= $nurse->First_Name ?></td>
+                    <td><?= $nurse->Last_Name ?></td>
+                    <td><?= $nurse->Specialisation ?></td>
+                    <td><?= $nurse->Years_of_Experience ?></td>
+                    <td><?= $nurse->Email ?></td>
+                    <td><?= $nurse->status ?></td>
+                    <td>
+                        <a href="<?= site_url('NurseCrudController/edit_nurse/' . $nurse->User_ID) ?>" class="btn btn-primary">Edit</a>
+                        <a href="<?= site_url('NurseCrudController/delete_nurse/' . $nurse->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this nurse?');">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-
-            <tbody>
-                <?php if (!empty($nurses) && is_array($nurses)): ?>
-                    <?php foreach ($nursess as $nurse): ?>
-                    <tr>
-                        <td><?= esc($nurse->First_Name) ?></td>
-                        <td><?= esc($nurse->Last_Name) ?></td>
-                        <td><?= esc($nurse->Specialisation) ?></td>
-                        <td><?= esc($nurse->Years_of_Experience) ?></td>
-                        <td><?= esc($nurse->Rating) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5">No nurses found</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
     <!-- ================= Recent Customers ================ -->
     <!-- <div class="recentCustomers">

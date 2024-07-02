@@ -10,7 +10,13 @@
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="<?= base_url('assets/js/chartsJS.js') ?>"></script>
+</head>
 <body>
     <!-- =============== Navigation ================ -->
     <div class="container">
@@ -84,9 +90,9 @@
                         </span>
                         <span class="title">Password</span>
                     </a>
-                </li>
+                </li> -->
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
@@ -195,43 +201,55 @@
         </table>
     </div> -->
 
-    <!-- ================= Recent Customers ================ -->
-    <!-- <div class="recentCustomers">
-        <div class="cardHeader">
-            <h2>Recent Customers</h2>
-        </div>
+    
+<!-- ================ Charts ================= -->
 
-        <table>
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="imgs/customer02.jpg" alt=""></div>
-                </td>
-                <td>
-                    <h4>David <br> <span>Italy</span></h4>
-                </td>
-            </tr>
-
-            <tr>
-                <td width="60px">
-                    <div class="imgBx"><img src="imgs/customer01.jpg" alt=""></div>
-                </td>
-                <td>
-                    <h4>Amit <br> <span>India</span></h4>
-                </td>
-            </tr>
-            
-            // Add more customers as needed 
-        </table>
+<div class="chartsBx">
+        <div class="chart"> <canvas id="chart-1"></canvas> </div>
+        <div class="chart"> <canvas id="chart-2"></canvas> </div>
     </div>
-</div>
-</div>
-</div> -->
 
+    <script>
+        // Data from the server
+        const doctorCount = <?= $doctor_count ?>;
+        const nurseCount = <?= $nurse_count ?>;
+        const patientCount = <?= $patient_count ?>;
 
+        // Pie Chart
+        const ctx1 = document.getElementById('chart-1').getContext('2d');
+        const pieChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Doctors', 'Nurses', 'Patients'],
+                datasets: [{
+                    label: '# of People',
+                    data: [doctorCount, nurseCount, patientCount],
+                    backgroundColor: ['#C6D8FF', '#FC7643', '#DAFF7D']
+                }]
+            }
+        });
 
+        // Bar Chart
+        const ctx2 = document.getElementById('chart-2').getContext('2d');
+        const barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Doctors', 'Nurses', 'Patients'],
+                datasets: [{
+                    label: 'Mediconnect Users',
+                    data: [doctorCount, nurseCount, patientCount],
+                    backgroundColor: ['#C6D8FF', '#FC7643', '#DAFF7D']
+                }]
+            }
+        });
+    </script>
 
     <!-- =========== Scripts =========  -->
     <script src="js/main.js"></script>
+
+      <!-- ======= Charts JS ====== -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="assets/js/chartsJS.js"></script>
 
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

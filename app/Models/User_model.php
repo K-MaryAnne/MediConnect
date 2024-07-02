@@ -17,7 +17,8 @@ class User_model extends Model
         'Specialisation',
         'Years_of_Experience',
         'Rating',
-        'status'
+        'status',
+        'Email'
     ];
 
     // Insert doctor
@@ -47,7 +48,7 @@ class User_model extends Model
 
     // Get nurse by ID
     public function get_nurse_by_id($id) {
-        return $this->db->table('nursess')->getWhere(['User_ID' => $id])->getRow();
+        return $this->db->table('nurses')->getWhere(['User_ID' => $id])->getRow();
     }
 
     // Get all patients

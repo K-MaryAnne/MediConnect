@@ -19,20 +19,22 @@
                 <li>
                     <a href="#">
                         <span class="icon">
-                            <!-- <ion-icon name="logo-apple"></ion-icon> -->
+                        <div class="user">
+                <img src="imgs/assistance.png" alt="">
+                </div>
                         </span>
                         <span class="title">MediConnect</span>
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
                         <span class="title">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li>
     <a href="<?= base_url('manage-users') ?>">
@@ -54,14 +56,15 @@
 
 
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="help-outline"></ion-icon>
-                        </span>
-                        <span class="title">Help</span>
-                    </a>
-                </li>
+<li>
+    <a href="<?= base_url('stats') ?>">
+        <span class="icon">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+        </span>
+        <span class="title">Stats</span>
+    </a>
+</li>
+
 
                 <li>
     <a href="<?= base_url('admin/profile') ?>">
@@ -109,7 +112,7 @@
                 </div>
 
                 <div class="user">
-                    <img src="imgs/customer01.jpg" alt="">
+                <img src="imgs/admin.png" alt="">
                 </div>
             </div>
 
@@ -161,43 +164,50 @@
             </div>
 
 <!-- ================ Doctors List ================= -->
-<div class="details">
-    <div class="recentDoctors">
-        <div class="cardHeader">
-            <h2>Doctors</h2>
-            <a href="#" class="btn">View All</a>
+<div class="container mt-5">
+    <h2>Doctors List</h2>
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success">
+            <?= session()->getFlashdata('success') ?>
         </div>
-
-        <table>
-            <thead>
+    <?php endif; ?>
+    <?php if (session()->getFlashdata('error')) : ?>
+        <div class="alert alert-danger">
+            <?= session()->getFlashdata('error') ?>
+        </div>
+    <?php endif; ?>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Specialisation</th>
+                <th>Years of Experience</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($doctors as $doctor) : ?>
                 <tr>
-                    <td>First Name</td>
-                    <td>Last Name</td>
-                    <td>Specialisation</td>
-                    <td>Years of Experience</td>
-                    <td>Rating</td>
+                    <td><?= $doctor->User_ID ?></td>
+                    <td><?= $doctor->First_Name ?></td>
+                    <td><?= $doctor->Last_Name ?></td>
+                    <td><?= $doctor->Specialisation ?></td>
+                    <td><?= $doctor->Years_of_Experience ?></td>
+                    <td><?= $doctor->Email ?></td>
+                    <td><?= $doctor->status ?></td>
+                    <td>
+                        <a href="<?= site_url('DoctorCrudController/edit_doctor/' . $doctor->User_ID) ?>" class="btn btn-primary">Edit</a>
+                        <a href="<?= site_url('DoctorCrudController/delete_doctor/' . $doctor->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this doctor?');">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-
-            <tbody>
-                <?php if (!empty($doctors) && is_array($doctors)): ?>
-                    <?php foreach ($doctors as $doctor): ?>
-                    <tr>
-                        <td><?= esc($doctor->First_Name) ?></td>
-                        <td><?= esc($doctor->Last_Name) ?></td>
-                        <td><?= esc($doctor->Specialisation) ?></td>
-                        <td><?= esc($doctor->Years_of_Experience) ?></td>
-                        <td><?= esc($doctor->Rating) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5">No doctors found</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
     <!-- ================= Recent Customers ================ -->
     <!-- <div class="recentCustomers">

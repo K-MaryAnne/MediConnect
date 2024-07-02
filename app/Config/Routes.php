@@ -71,3 +71,30 @@ $routes->get('admin/profile', 'AdminController::profile');
 
 $routes->get('/NurseCrudController', 'NurseCrudController::index');
 $routes->get('view-nurses', 'NurseCrudController::view_nurses');
+
+// $routes->get('DoctorCrudController/edit_doctor/(:num)', 'DoctorCrudController::edit_doctor/$1');
+// $routes->get('NurseCrudController/edit_nurse/(:num)', 'NurseCrudController::edit_nurse/$1');
+// $routes->get('DoctorCrudController/edit_doctor/(:num)', 'DoctorCrudController::edit_doctor/$1');
+// $routes->post('DoctorCrudController/edit_doctor/(:num)', 'DoctorCrudController::update_doctor/$1');
+// $routes->get('NurseCrudController/edit_nurse/(:num)', 'NurseCrudController::edit_nurse/$1');
+// $routes->post('NurseCrudController/edit_nurse/(:num)', 'NurseCrudController::update_nurse/$1');
+
+
+
+
+$routes->get('DoctorCrudController/edit_doctor/(:num)', 'DoctorCrudController::edit_doctor/$1');
+$routes->post('DoctorCrudController/update_doctor/(:num)', 'DoctorCrudController::update_doctor/$1');
+$routes->get('DoctorCrudController/delete_doctor/(:num)', 'DoctorCrudController::delete_doctor/$1');
+
+
+
+$routes->get('NurseCrudController/edit_nurse/(:num)', 'NurseCrudController::edit_nurse/$1');
+$routes->post('NurseCrudController/update_nurse/(:num)', 'NurseCrudController::update_nurse/$1');
+$routes->get('NurseCrudController/delete_nurse/(:num)', 'NurseCrudController::delete_nurse/$1');
+
+$routes->post('doctor/update/(:num)', 'DoctorCrudController::update_doctor/$1');
+$routes->post('nurse/update/(:num)', 'NurseCrudController::update_nurse/$1');
+
+$routes->get('stats', 'Stats::index');
+
+

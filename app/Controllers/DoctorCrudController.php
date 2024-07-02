@@ -6,10 +6,20 @@ use App\Models\User_model;
 
 class DoctorCrudController extends BaseController
 {
-    protected $userModel;
-
     public function __construct() {
         $this->userModel = new User_model();
+        helper(['form', 'url']);
+    
+        // Check if user is logged in
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+    
+        // Check if user has the right role/permissions
+        // Assuming role 1 is admin
+        if (session()->get('role') != 1) {
+            return redirect()->to('/unauthorized');
+        }
     }
     
     // Display list of doctors
@@ -19,7 +29,7 @@ class DoctorCrudController extends BaseController
     // }
     
 
-    // View Patients
+    // View Doctors
     public function view_doctors() {
         $data['doctors'] = $this->userModel->get_all_doctors();
         echo view('doctors_view', $data);
@@ -29,14 +39,60 @@ class DoctorCrudController extends BaseController
         // Handle form submission to insert admin
     }
     
-    // Edit doctor
-    public function edit($id) {
-        // Handle form submission to update admin
+    //Edit doctors
+    public function edit_doctor($id) {
+        $doctor = $this->userModel->get_doctor_by_id($id);
+        if (!$doctor) {
+            return redirect()->back()->with('error', 'Doctor not found');
+        }
+
+        $data['doctor'] = $doctor;
+        echo view('edit_doctor_view', $data);
     }
-    
-    // Delete doctor
-    public function delete($id) {
-        // Handle deletion of admin
+
+    // Update doctor
+    public function update_doctor($id) {
+        if ($this->request->getMethod() == 'post') {
+            $validation =  \Config\Services::validation();
+
+            $validation->setRules([
+                'First_Name' => 'required|min_length[3]|max_length[50]',
+                'Last_Name' => 'required|min_length[3]|max_length[50]',
+                'Specialisation' => 'required|min_length[3]|max_length[100]',
+                'Years_of_Experience' => 'required|integer',
+                'Email' => 'required|valid_email',
+                'status' => 'required|in_list[active,inactive]',
+            ]);
+
+            if (!$validation->withRequest($this->request)->run()) {
+                return redirect()->back()->with('error', $validation->listErrors());
+            }
+
+            $data = [
+                'First_Name' => $this->request->getPost('First_Name'),
+                'Last_Name' => $this->request->getPost('Last_Name'),
+                'Specialisation' => $this->request->getPost('Specialisation'),
+                'Years_of_Experience' => $this->request->getPost('Years_of_Experience'),
+                'Email' => $this->request->getPost('Email'),
+                'status' => $this->request->getPost('status')
+            ];
+
+            if ($this->userModel->update_doctor($id, $data)) {
+                return redirect()->to('/view_doctors')->with('success', 'Doctor updated successfully');
+            } else {
+                return redirect()->back()->with('error', 'Failed to update doctor');
+            }
+        }
+    }
+
+
+    //Delete doctor
+    public function delete_doctor($id) {
+        if ($this->userModel->delete_doctor($id)) {
+            return redirect()->to('/view_doctors')->with('success', 'Doctor deleted successfully');
+        } else {
+            return redirect()->back()->with('error', 'Failed to delete doctor');
+        }
     }
 
     // View Patients

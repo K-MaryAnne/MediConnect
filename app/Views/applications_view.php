@@ -16,19 +16,21 @@
                 <li>
                     <a href="#">
                         <span class="icon">
-                            <!-- <ion-icon name="logo-apple"></ion-icon> -->
+                        <div class="user">
+                <img src="imgs/assistance.png" alt="">
+                </div>
                         </span>
                         <span class="title">MediConnect</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
                         <span class="title">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="<?= base_url('manage-users') ?>">
                         <span class="icon">
@@ -46,13 +48,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="help-outline"></ion-icon>
-                        </span>
-                        <span class="title">Help</span>
-                    </a>
-                </li>
+    <a href="<?= base_url('stats') ?>">
+        <span class="icon">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+        </span>
+        <span class="title">Stats</span>
+    </a>
+</li>
                 <li>
     <a href="<?= base_url('admin/profile') ?>">
         <span class="icon">
@@ -61,14 +63,14 @@
         <span class="title">Profile</span>
     </a>
 </li>
-
+<!-- 
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="lock-closed-outline"></ion-icon>
                         </span>
                         <span class="title">Password</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="#">
                         <span class="icon">
@@ -93,12 +95,12 @@
                     </label>
                 </div>
                 <div class="user">
-                    <img src="imgs/customer01.jpg" alt="">
+                    <img src="imgs/admin.png" alt="">
                 </div>
             </div>
 
             <!-- ======================= Cards ================== -->
-            <div class="cardBox">
+            <!-- <div class="cardBox">
                 <div class="card">
                     <div>
                         <div class="numbers">1,504</div>
@@ -135,7 +137,7 @@
                         <ion-icon name="cash-outline"></ion-icon>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 <!-- ================ User Applications List ================= -->
 <div class="details">
