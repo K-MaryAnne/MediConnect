@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\RatingModel;
 
 class PatientProfileController extends BaseController
 {
@@ -21,9 +22,12 @@ class PatientProfileController extends BaseController
         }
 
         $userModel = new UserModel();
-        $user = $userModel->find($userId);
+        $ratingModel = new RatingModel(); // Instantiate RatingModel
 
-        echo view('patient_profile', ['user' => $user]);
+        $user = $userModel->find($userId);
+        $ratings = $ratingModel->getRatingsByUserId($userId); // Example method to get ratings for the user
+
+        echo view('patient_profile', ['user' => $user, 'ratings' => $ratings]);
     }
 
     public function editProfile()
@@ -105,6 +109,40 @@ class PatientProfileController extends BaseController
                 }
             } else {
                 return redirect()->to('/patient_profile')->with('error', $this->validator->listErrors());
+            }
+        }
+    }
+
+    public function rateDoctor($doctorId)
+    {
+        $session = session();
+        $userId = $session->get('user_id');
+
+        if (!$userId) {
+            return redirect()->to('/login')->with('error', 'Please log in to rate a doctor.');
+        }
+
+        $ratingModel = new RatingModel();
+
+        if ($this->request->getMethod() === 'post') {
+            if ($this->validate([
+                'rating' => 'required|integer|greater_than_equal_to[1]|less_than_equal_to[5]',
+                'review' => 'permit_empty|max_length[255]'
+            ])) {
+                $data = [
+                    'user_id' => $userId,
+                    'doctor_id' => $doctorId,
+                    'rating' => $this->request->getPost('rating'),
+                    'review' => $this->request->getPost('review')
+                ];
+
+                if ($ratingModel->insert($data)) {
+                    return redirect()->back()->with('success', 'Rating and review submitted successfully.');
+                } else {
+                    return redirect()->back()->with('error', 'Failed to submit rating and review.');
+                }
+            } else {
+                return redirect()->back()->with('error', $this->validator->listErrors());
             }
         }
     }

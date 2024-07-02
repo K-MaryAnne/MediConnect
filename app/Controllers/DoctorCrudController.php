@@ -101,7 +101,9 @@ class DoctorCrudController extends BaseController
                 'last_name' => 'required|min_length[3]|max_length[50]',
                 'email' => 'required|valid_email',
                 'mobile_number' => 'required|min_length[10]|max_length[15]',
-                'profile_image' => 'is_image[profile_image]|max_size[profile_image,1024]|mime_in[profile_image,image/jpg,image/jpeg,image/png]'
+                'profile_image' => 'is_image[profile_image]|max_size[profile_image,1024]|mime_in[profile_image,image/jpg,image/jpeg,image/png]',
+                'rating' => 'required|in_list[1,2,3,4,5]',
+                'review' => 'required|min_length[5]|max_length[255]',
             ];
 
             if ($this->validate($rules)) {
@@ -110,10 +112,13 @@ class DoctorCrudController extends BaseController
                     'Last_Name' => $this->request->getPost('last_name'),
                     'Email' => $this->request->getPost('email'),
                     'Mobile_Number' => $this->request->getPost('mobile_number'),
+                    'Rating' => $this->request->getPost('rating'),
+                    'Review' => $this->request->getPost('review'),
                 ];
 
                 $profileImage = $this->request->getFile('profile_image');
                 if ($profileImage->isValid() && !$profileImage->hasMoved()) {
+                    $newName = $profileImage->getRandomName();
                     $profileImage->move(WRITEPATH . 'uploads');
                     $data['Profile_Image'] = $profileImage->getName();
                 }
