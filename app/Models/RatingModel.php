@@ -7,11 +7,11 @@ use CodeIgniter\Model;
 class RatingModel extends Model
 {
     protected $table = 'ratings';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'doctor_id', 'rating', 'review'];
+    protected $primaryKey = 'rate_id';
+    protected $allowedFields = [
+        'user_id', 'doctor_id', 'patient_id', 'rating', 'review', 'created_at'
+    ];
 
-    public function getRatingsByUserId($userId)
-    {
-        return $this->where('user_id', $userId)->findAll();
-    }
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
 }
