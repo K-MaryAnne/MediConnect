@@ -126,19 +126,24 @@ project_root/
 └── ... (other project files)
 ```
 
-## Additional Sections
 
 ### Project Status
 This project is currently in progress.
 
-### Known Issues
-- Image validation for file size and dimensions may need enhancement.
-- Improve error handling and feedback for form submissions.
+### Contact Information
+For questions or feedback, please contact us through the issues section of the repository.
 
 ### Acknowledgements
 - CodeIgniter 4 Documentation
 - Bootstrap
 
-### Contact Information
-For questions or feedback, please contact us through the issues section of the repository.
-```
+## Licenses
+
+### Bootstrap
+Bootstrap is released under the MIT License. You can view the full license [here](https://github.com/twbs/bootstrap/blob/main/LICENSE).
+
+### CodeIgniter
+CodeIgniter is released under the MIT License. You can view the full license [here](https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst).
+
+![Bootstrap](https://img.shields.io/badge/bootstrap-v5.1.3-blue)
+![CodeIgniter](https://img.shields.io/badge/codeigniter-v4.1.5-orange)
