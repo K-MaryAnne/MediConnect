@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="p-3 py-5">
-                <h4 class="text-center mb-4">Welcome!</h4>
+                <h4 class="text-center mb-4">Welcome, <?= $user['first_name'] ?>!</h4>
 
                 <!-- History Button -->
                 <div class="text-center mb-4">
