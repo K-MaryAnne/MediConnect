@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User_model;
 
-class NurseCrudController extends BaseController
+class PatientCrudController extends BaseController
 {
     public function __construct() {
         $this->userModel = new User_model();
@@ -23,42 +23,42 @@ class NurseCrudController extends BaseController
     }
 
 
-    // Display list of nurses
+    // Display list of patients
 
-    public function view_nurses() {
-        $data['nurses'] = $this->userModel->get_all_nurses();
-        echo view('nurses_view', $data);
+    public function view_patients() {
+        $data['patients'] = $this->userModel->get_all_patients();
+        echo view('patients_view', $data);
     }
 
-    // Add new nurses
+    // Add new patients
     public function add() {
         // Handle form submission to insert admin
     }
     
-    //Edit nurses
-    // public function edit_nurse($id) {
-    //     $nurse = $this->userModel->get_nurse_by_id($id);
-    //     if (!$nurse) {
-    //         return redirect()->back()->with('error', 'Nurse not found');
+    //Edit patients
+    // public function edit_patient($id) {
+    //     $patient = $this->userModel->get_patient_by_id($id);
+    //     if (!$patient) {
+    //         return redirect()->back()->with('error', 'patient not found');
     //     }
 
-    //     $data['nurse'] = $nurse;
-    //     echo view('edit_nurse_view', $data);
+    //     $data['patient'] = $patient;
+    //     echo view('edit_patient_view', $data);
     // }
 
-    public function edit_nurse($id) {
-        $nurse = $this->userModel->get_nurse_by_id($id);
-        if (!$nurse) {
-            return redirect()->back()->with('error', 'Nurse not found');
+    public function edit_patient($id) {
+        $patient = $this->userModel->get_patient_by_id($id);
+        if (!$patient) {
+            return redirect()->back()->with('error', 'Patient not found');
         }
     
-        $data['nurse'] = $nurse;
-        return view('edit_nurse_view', $data);
+        $data['patient'] = $patient;
+        return view('edit_patient_view', $data);
     }
     
 
-    // Update nurse
-    // public function update_nurse($id) {
+    // Update patient
+    // public function update_patient($id) {
     //     if ($this->request->getMethod() == 'post') {
     //         $validation =  \Config\Services::validation();
 
@@ -84,23 +84,21 @@ class NurseCrudController extends BaseController
     //             'status' => $this->request->getPost('status')
     //         ];
 
-    //         if ($this->userModel->update_nurse($id, $data)) {
-    //             return redirect()->to('/view_nurses')->with('success', 'nurse updated successfully');
+    //         if ($this->userModel->update_patient($id, $data)) {
+    //             return redirect()->to('/view_patients')->with('success', 'Patient updated successfully');
     //         } else {
-    //             return redirect()->back()->with('error', 'Failed to update nurse');
+    //             return redirect()->back()->with('error', 'Failed to update patient');
     //         }
     //     }
     // }
-    public function update_nurse($id)
+    public function update_patient($id)
     {
         helper(['form', 'url']);
     
-        // Validation rules for nurse update form
+        // Validation rules for patient update form
         $validationRules = [
             'First_Name' => 'required|min_length[3]|max_length[50]',
             'Last_Name' => 'required|min_length[3]|max_length[50]',
-            'Specialisation' => 'required|min_length[3]|max_length[100]',
-            'Years_of_Experience' => 'required|integer',
             'Email' => 'required|valid_email',
             'status' => 'required|in_list[active,inactive]',
         ];
@@ -114,17 +112,15 @@ class NurseCrudController extends BaseController
         $data = [
             'First_Name' => $this->request->getVar('First_Name'),
             'Last_Name' => $this->request->getVar('Last_Name'),
-            'Specialisation' => $this->request->getVar('Specialisation'),
-            'Years_of_Experience' => $this->request->getVar('Years_of_Experience'),
             'Email' => $this->request->getVar('Email'),
             'status' => $this->request->getVar('status'),
         ];
     
-        // Update nurse data in the database
-        if ($userModel->update_nurse($id, $data)) {
-            return redirect()->to('/view-nurses')->with('success', 'Nurse updated successfully');
+        // Update patient data in the database
+        if ($userModel->update_patient($id, $data)) {
+            return redirect()->to('/view-patients')->with('success', 'Patient updated successfully');
         } else {
-            return redirect()->back()->with('error', 'Failed to update nurse');
+            return redirect()->back()->with('error', 'Failed to update patient');
         }
     }
     
@@ -133,22 +129,21 @@ class NurseCrudController extends BaseController
     
 
 
-    //Delete nurse
-    public function delete_nurse($id) {
-        if ($this->userModel->delete_nurse($id)) {
-            return redirect()->to('/view_nurses')->with('success', 'Nurse deleted successfully');
+    //Delete patient
+    public function delete_patient($id) {
+        if ($this->userModel->delete_patient($id)) {
+            return redirect()->to('/view_patients')->with('success', 'Patient deleted successfully');
         } else {
-            return redirect()->back()->with('error', 'Failed to delete nurse');
+            return redirect()->back()->with('error', 'Failed to delete patient');
         }
     }
 
     
-       
 
     // Profile view and update
     public function profile($id) {
-        $nurse = $this->userModel->find($id);
-        echo view('nurse_profile', ['nurse' => $nurse]);
+        $patient = $this->userModel->find($id);
+        echo view('patient_profile', ['patient' => $patient]);
     }
 
     public function update_profile($id) {
@@ -181,9 +176,9 @@ class NurseCrudController extends BaseController
                 }
 
                 $this->userModel->update($id, $data);
-                return redirect()->to('/NurseCrudController/profile/' . $id)->with('success', 'Profile updated successfully');
+                return redirect()->to('/PatientCrudController/profile/' . $id)->with('success', 'Profile updated successfully');
             } else {
-                return redirect()->to('/NurseCrudController/profile/' . $id)->withInput()->with('errors', $this->validator->getErrors());
+                return redirect()->to('/PatientCrudController/profile/' . $id)->withInput()->with('errors', $this->validator->getErrors());
             }
         }
     }

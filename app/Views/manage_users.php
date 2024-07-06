@@ -62,7 +62,7 @@
         <span class="icon">
             <ion-icon name="stats-chart-outline"></ion-icon>
         </span>
-        <span class="title">Stats</span>
+        <span class="title">Statistics</span>
     </a>
 </li>
 

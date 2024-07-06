@@ -36,50 +36,101 @@ class DoctorCrudController extends BaseController
     }
     
     //Edit doctors
+    // public function edit_doctor($id) {
+    //     $doctor = $this->userModel->get_doctor_by_id($id);
+    //     if (!$doctor) {
+    //         return redirect()->back()->with('error', 'Doctor not found');
+    //     }
+
+    //     $data['doctor'] = $doctor;
+    //     echo view('edit_doctor_view', $data);
+    // }
+
     public function edit_doctor($id) {
         $doctor = $this->userModel->get_doctor_by_id($id);
         if (!$doctor) {
             return redirect()->back()->with('error', 'Doctor not found');
         }
-
+    
         $data['doctor'] = $doctor;
-        echo view('edit_doctor_view', $data);
+        return view('edit_doctor_view', $data);
     }
+    
 
     // Update doctor
-    public function update_doctor($id) {
-        if ($this->request->getMethod() == 'post') {
-            $validation =  \Config\Services::validation();
+    // public function update_doctor($id) {
+    //     if ($this->request->getMethod() == 'post') {
+    //         $validation =  \Config\Services::validation();
 
-            $validation->setRules([
-                'First_Name' => 'required|min_length[3]|max_length[50]',
-                'Last_Name' => 'required|min_length[3]|max_length[50]',
-                'Specialisation' => 'required|min_length[3]|max_length[100]',
-                'Years_of_Experience' => 'required|integer',
-                'Email' => 'required|valid_email',
-                'status' => 'required|in_list[active,inactive]',
-            ]);
+    //         $validation->setRules([
+    //             'First_Name' => 'required|min_length[3]|max_length[50]',
+    //             'Last_Name' => 'required|min_length[3]|max_length[50]',
+    //             'Specialisation' => 'required|min_length[3]|max_length[100]',
+    //             'Years_of_Experience' => 'required|integer',
+    //             'Email' => 'required|valid_email',
+    //             'status' => 'required|in_list[active,inactive]',
+    //         ]);
 
-            if (!$validation->withRequest($this->request)->run()) {
-                return redirect()->back()->with('error', $validation->listErrors());
-            }
+    //         if (!$validation->withRequest($this->request)->run()) {
+    //             return redirect()->back()->with('error', $validation->listErrors());
+    //         }
 
-            $data = [
-                'First_Name' => $this->request->getPost('First_Name'),
-                'Last_Name' => $this->request->getPost('Last_Name'),
-                'Specialisation' => $this->request->getPost('Specialisation'),
-                'Years_of_Experience' => $this->request->getPost('Years_of_Experience'),
-                'Email' => $this->request->getPost('Email'),
-                'status' => $this->request->getPost('status')
-            ];
+    //         $data = [
+    //             'First_Name' => $this->request->getPost('First_Name'),
+    //             'Last_Name' => $this->request->getPost('Last_Name'),
+    //             'Specialisation' => $this->request->getPost('Specialisation'),
+    //             'Years_of_Experience' => $this->request->getPost('Years_of_Experience'),
+    //             'Email' => $this->request->getPost('Email'),
+    //             'status' => $this->request->getPost('status')
+    //         ];
 
-            if ($this->userModel->update_doctor($id, $data)) {
-                return redirect()->to('/view_doctors')->with('success', 'Doctor updated successfully');
-            } else {
-                return redirect()->back()->with('error', 'Failed to update doctor');
-            }
+    //         if ($this->userModel->update_doctor($id, $data)) {
+    //             return redirect()->to('/view_doctors')->with('success', 'Doctor updated successfully');
+    //         } else {
+    //             return redirect()->back()->with('error', 'Failed to update doctor');
+    //         }
+    //     }
+    // }
+    public function update_doctor($id)
+    {
+        helper(['form', 'url']);
+    
+        // Validation rules for doctor update form
+        $validationRules = [
+            'First_Name' => 'required|min_length[3]|max_length[50]',
+            'Last_Name' => 'required|min_length[3]|max_length[50]',
+            'Specialisation' => 'required|min_length[3]|max_length[100]',
+            'Years_of_Experience' => 'required|integer',
+            'Email' => 'required|valid_email',
+            'status' => 'required|in_list[active,inactive]',
+        ];
+    
+        // Validate input against the rules
+        if (!$this->validate($validationRules)) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        }
+    
+        $userModel = new User_model(); // Assuming your model is named User_model
+        $data = [
+            'First_Name' => $this->request->getVar('First_Name'),
+            'Last_Name' => $this->request->getVar('Last_Name'),
+            'Specialisation' => $this->request->getVar('Specialisation'),
+            'Years_of_Experience' => $this->request->getVar('Years_of_Experience'),
+            'Email' => $this->request->getVar('Email'),
+            'status' => $this->request->getVar('status'),
+        ];
+    
+        // Update doctor data in the database
+        if ($userModel->update_doctor($id, $data)) {
+            return redirect()->to('/view-doctors')->with('success', 'Doctor updated successfully');
+        } else {
+            return redirect()->back()->with('error', 'Failed to update doctor');
         }
     }
+    
+    
+    
+    
 
 
     //Delete doctor
@@ -98,13 +149,22 @@ class DoctorCrudController extends BaseController
     }
 
     // View User Applications
+    // public function applications_view() {
+    //     $data['applications'] = $this->userModel->get_pending_applications();
+    //     return view('applications_view', $data);
+    // }
+
     public function applications_view() {
-        $data['applications'] = $this->userModel->get_all_applications();
+        $db = db_connect();
+        $query = $db->query("SELECT * FROM user_applications WHERE status = 'pending'");
+        $data['applications'] = $query->getResult();
         return view('applications_view', $data);
     }
     
     // Accept application
     public function accept_application($application_id) {
+        // $this->db->transStart();
+
         $application = $this->userModel->get_application_by_id($application_id);
         
         if ($application) {
@@ -128,18 +188,36 @@ class DoctorCrudController extends BaseController
             
             // Update application status to 'accepted'
             $this->userModel->update_application_status($application_id, 'accepted');
+            
         } else {
             log_message('error', 'Application not found: ID ' . $application_id);
         }
+
+        // if ($this->db->transStatus() === FALSE) {
+        //     // If something went wrong, roll back the transaction
+        //     return redirect()->back()->with('error', 'Failed to process application');
+        // }
         
         return redirect()->to('/DoctorCrudController/applications_view');
     }
     
     // Deny application
     public function deny_application($application_id) {
+        $this->db->transStart();
+    
+        // Update application status to 'denied'
         $this->userModel->update_application_status($application_id, 'denied');
-        return redirect()->to('/DoctorCrudController/applications_view');
+            
+        $this->db->transComplete();
+    
+        if ($this->db->transStatus() === FALSE) {
+            // If something went wrong, roll back the transaction
+            return redirect()->back()->with('error', 'Failed to deny application');
+        }
+    
+        return redirect()->to('/DoctorCrudController/applications_view')->with('success', 'Application denied successfully');
     }
+    
 
     // Manage Users (example view)
     public function manage_users() {

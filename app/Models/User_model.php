@@ -31,6 +31,11 @@ class User_model extends Model
         return $this->db->table('nurses')->insert($data);
     }
 
+    // Insert patient
+    public function insert_patient($data) {
+        return $this->db->table('patients')->insert($data);
+    }
+
     // Get all doctors
     public function get_all_doctors() {
         return $this->db->table('doctors')->get()->getResult();
@@ -55,6 +60,11 @@ class User_model extends Model
     public function get_all_patients() {
         return $this->db->table('patients')->get()->getResult();
     }
+
+    // Get patient by ID
+    public function get_patient_by_id($id) {
+        return $this->db->table('patients')->getWhere(['User_ID' => $id])->getRow();
+    }
     
     // Update doctor
     public function update_doctor($id, $data) {
@@ -65,6 +75,11 @@ class User_model extends Model
     public function update_nurse($id, $data) {
         return $this->db->table('nurses')->update($data, ['User_ID' => $id]);
     }
+
+    // Update patient
+    public function update_patient($id, $data) {
+        return $this->db->table('patients')->update($data, ['User_ID' => $id]);
+    }
     
     // Delete doctor
     public function delete_doctor($id) {
@@ -74,6 +89,16 @@ class User_model extends Model
     // Delete nurse
     public function delete_nurse($id) {
         return $this->db->table('nurses')->delete(['User_ID' => $id]);
+    }
+
+    // Delete patient
+    public function delete_patient($id) {
+        return $this->db->table('patients')->delete(['User_ID' => $id]);
+    }
+
+     // Method to get all pending applications
+     public function get_pending_applications() {
+        return $this->where('status', 'pending')->findAll();
     }
 
     // Get all applications
@@ -92,15 +117,17 @@ class User_model extends Model
         $this->db->where('User_ID', $user_data['User_ID']);
         $this->db->update('users', ['Role_ID' => $user_data['Role_ID']]);
         
-        // Insert into doctors or nurses table
+        // Insert into doctors, nurses or patients table
         if ($user_data['Role_ID'] == 2) {
             // Doctor
             return $this->db->insert('doctors', $user_data);
         } elseif ($user_data['Role_ID'] == 3) {
             // Nurse
             return $this->db->insert('nurses', $user_data);
+        } elseif ($user_data['Role_ID'] == 4) {
+            // Nurse
+            return $this->db->insert('patients', $user_data);
         }
-        
         return false;
     }
 
@@ -114,5 +141,8 @@ class User_model extends Model
         return $this->db->table('user_applications')->where('id', $id)->update(['status' => $status]);
     }
 
+    public function delete_application($application_id) {
+        return $this->db->table('user_applications')->where('id', $application_id)->delete();
+    }
     
 }

@@ -19,20 +19,20 @@
                 <li>
                     <a href="#">
                         <span class="icon">
-                            <!-- <ion-icon name="logo-apple"></ion-icon> -->
+                        <img src="imgs/assistance.png" alt="">
                         </span>
                         <span class="title">MediConnect</span>
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
                         <span class="title">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li>
                     <a href="<?= base_url('manage-users') ?>">
@@ -53,13 +53,14 @@
                 </li>
 
                 <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="help-outline"></ion-icon>
-                        </span>
-                        <span class="title">Help</span>
-                    </a>
-                </li>
+    <a href="<?= base_url('stats') ?>">
+        <span class="icon">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+        </span>
+        <span class="title">Stats</span>
+    </a>
+</li>
+
 
                 <li>
                     <a href="<?= base_url('admin/profile') ?>">
@@ -70,23 +71,23 @@
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="lock-closed-outline"></ion-icon>
                         </span>
                         <span class="title">Password</span>
                     </a>
-                </li>
+                </li> -->
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -105,24 +106,26 @@
                 </div>
 
                 <div class="user">
-                    <img src="imgs/customer01.jpg" alt="">
+                <img src="imgs/admin.png" alt="">
                 </div>
             </div>
+
+            
 
             <!-- ======================= Edit Nurse ================== -->
             <div class="container mt-5">
                 <h2>Edit Nurse</h2>
-               <!-- Display Validation Errors -->
+                <!-- Display Validation Errors -->
     <?php if (session()->getFlashdata('error')): ?>
         <div class="alert alert-danger">
             <?= session()->getFlashdata('error') ?>
         </div>
     <?php endif; ?>
-                <form action="<?= base_url('nurse/update/' . $nurse->User_ID) ?>" method="post">
+    <form action="<?= site_url('NurseCrudController/update_nurse/'.$Nurse->User_ID) ?>" method="post">
                     <?= csrf_field() ?>
                     <div class="form-group">
                         <label for="First_Name">First Name</label>
-                        <input type="text" class="form-control" id="First_Name" name="First_Name" value="<?= $nurse->First_Name ?>" required>
+                        <input type="text" class="form-control" id="First_Name" name="First_Name" value="<?= $Nurse->First_Name ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="Last_Name">Last Name</label>

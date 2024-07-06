@@ -46,15 +46,26 @@ class SignUp extends BaseController
     {
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
-
+    
         $model = new UserModel();
         $user = $model->where('Email', $email)->first();
-
+    
         if ($user) {
             if (password_verify($password, $user['Password'])) {
                 if ($user['Status'] == 1) {
                     $this->setUserSession($user);
-                    return redirect()->to('/dashboard');
+                    switch ($user['Role_ID']) {
+                        case 1:
+                            return redirect()->to('/manage-users');
+                        case 2:
+                            return redirect()->to('/dashboard');
+                        case 3:
+                            return redirect()->to('/dashboard');
+                        case 4:
+                            return redirect()->to('/dashboard');
+                        default:
+                            return redirect()->to('/login')->with('error', 'Role not recognized');
+                    }
                 } else {
                     return redirect()->back()->with('error', 'Your account is not activated. Please check your email.');
                 }
@@ -65,6 +76,7 @@ class SignUp extends BaseController
             return redirect()->back()->with('error', 'User not found');
         }
     }
+    
     /*public function authenticate(): Defines the authenticate method, which handles user login.
     $email = $this->request->getPost('email');: Retrieves the email from the login form.
     $password = $this->request->getPost('password');: Retrieves the password from the login form.
@@ -75,15 +87,17 @@ class SignUp extends BaseController
     if ($user['Status'] == 1): Checks if the user's account is activated. Calls setUserSession to set user session data and redirects to the dashboard. Else, redirects back with an error message indicating the account is not activated. Else, redirects back with an error message indicating an invalid password.Else, redirects back with an error message indicating the user was not found.*/
 
     private function setUserSession($user)
-    {
-        $data = [
-            'id' => $user['User_id'],
-            'email' => $user['Email'],
-            'isLoggedIn' => true,
-        ];
+{
+    $data = [
+        'id' => $user['User_id'],
+        'email' => $user['Email'],
+        'role_id' => $user['Role_ID'], // Store role_id in session
+        'isLoggedIn' => true,
+    ];
 
-        session()->set($data);
-    }
+    session()->set($data);
+}
+
     /*private function setUserSession($user): Defines the setUserSession method, which sets session data for a logged-in user.
     $data = [ ... ];: Prepares the session data array. 
     session()->set($data);: Sets the session data.

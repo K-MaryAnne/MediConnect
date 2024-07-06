@@ -9,6 +9,10 @@
     <title>Mediconnect Admin Dashboard</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css" />
 </head>
 
 <body>
@@ -77,7 +81,7 @@
 
 
 
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="lock-closed-outline"></ion-icon>
@@ -93,7 +97,7 @@
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -117,7 +121,7 @@
             </div>
 
             <!-- ======================= Cards ================== -->
-            <div class="cardBox">
+            <!-- <div class="cardBox">
                 <div class="card">
                     <div>
                         <div class="numbers">1,504</div>
@@ -161,7 +165,7 @@
                         <ion-icon name="cash-outline"></ion-icon>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 <!-- ================ Doctors List ================= -->
 <div class="container mt-5">
@@ -176,17 +180,17 @@
             <?= session()->getFlashdata('error') ?>
         </div>
     <?php endif; ?>
-    <table class="table table-bordered">
+    <!-- <table class="table table-bordered"> -->
+    <table id="example" class="table table-striped nowrap" style="width:100%">    
         <thead>
             <tr>
                 <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Specialisation</th>
-                <th>Years of Experience</th>
                 <th>Email</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <!-- <th>Status</th> -->
+                <!-- <th>Actions</th> -->
             </tr>
         </thead>
         <tbody>
@@ -196,9 +200,8 @@
                     <td><?= $doctor->First_Name ?></td>
                     <td><?= $doctor->Last_Name ?></td>
                     <td><?= $doctor->Specialisation ?></td>
-                    <td><?= $doctor->Years_of_Experience ?></td>
                     <td><?= $doctor->Email ?></td>
-                    <td><?= $doctor->status ?></td>
+                  
                     <td>
                         <a href="<?= site_url('DoctorCrudController/edit_doctor/' . $doctor->User_ID) ?>" class="btn btn-primary">Edit</a>
                         <a href="<?= site_url('DoctorCrudController/delete_doctor/' . $doctor->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this doctor?');">Delete</a>
@@ -250,6 +253,17 @@
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- =========== Javascript Scripts for Datatable =========  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.bootstrap5.js"></script>
+
+    
+
+    
 </body>
 
 </html>

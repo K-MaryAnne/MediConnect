@@ -167,9 +167,9 @@
                 </div>
             </div> -->
 
-<!-- ================ Nurses List ================= -->
+<!-- ================ Patients List ================= -->
 <div class="container mt-5">
-    <h2>Nurses List</h2>
+    <h2>Patients List</h2>
     <?php if (session()->getFlashdata('success')) : ?>
         <div class="alert alert-success">
             <?= session()->getFlashdata('success') ?>
@@ -184,28 +184,24 @@
     <table id="example" class="table table-striped nowrap" style="width:100%">    
         <thead>
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Specialisation</th>
-                <!-- <th>Years of Experience</th>  -->
                 <th>Email</th>
                 <!-- <th>Status</th> -->
                 <!-- <th>Actions</th> -->
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($nurses as $nurse) : ?>
+            <?php foreach ($patients as $patient) : ?>
                 <tr>
-                    <td><?= $nurse->User_ID ?></td>
-                    <td><?= $nurse->First_Name ?></td>
-                    <td><?= $nurse->Last_Name ?></td>
-                    <td><?= $nurse->Specialisation ?></td>
-                    <td><?= $nurse->Email ?></td>
+                    <td><?= $patient->First_Name ?></td>
+                    <td><?= $patient->Last_Name ?></td>
+                    <td><?= $patient->Email ?></td>
                   
                     <td>
-                        <a href="<?= site_url('NurseCrudController/edit_nurse/' . $nurse->User_ID) ?>" class="btn btn-primary">Edit</a>
-                        <a href="<?= site_url('NurseCrudController/delete_nurse/' . $nurse->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this nurse?');">Delete</a>
+                        <a href="<?= site_url('PatientCrudController/edit_patient/' . $patient->User_ID) ?>" class="btn btn-primary">Edit</a>
+                        <a href="<?= site_url('PatientCrudController/delete_patient/' . $patient->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this patient?');">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

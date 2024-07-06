@@ -7,6 +7,12 @@
     <title>Mediconnect Admin Dashboard</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css" />
+
+    
 </head>
 <body>
     <!-- =============== Navigation ================ -->
@@ -71,14 +77,14 @@
                         <span class="title">Password</span>
                     </a>
                 </li> -->
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
                         <span class="title">Sign Out</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
@@ -146,10 +152,10 @@
                         <h2>User Applications</h2>
                     </div>
 
-                    <table>
+                    <table id="example" class="table table-striped nowrap" style="width:100%">    
                         <thead>
                             <tr>
-                                <th>ID</th>
+                              
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
@@ -163,7 +169,7 @@
                         <tbody>
                             <?php foreach ($applications as $application): ?>
                                 <tr>
-                                    <td><?= $application->id ?></td>
+                                   
                                     <td><?= $application->first_name ?></td>
                                     <td><?= $application->last_name ?></td>
                                     <td><?= $application->email ?></td>
@@ -172,8 +178,11 @@
                                     <td><?= $application->Years_of_Experience ?></td>
                                     <td><?= $application->status ?></td>
                                     <td>
-                                        <a href="<?= site_url('DoctorCrudController/accept_application/'.$application->id) ?>">Accept</a>
-                                        <a href="<?= site_url('DoctorCrudController/deny_application/'.$application->id) ?>">Deny</a>
+                                        
+
+                                        <a href="<?= site_url('DoctorCrudController/accept_application/'.$application->id) ?>" class="badge bg-success">Accept</a>
+                                        <a href="<?= site_url('DoctorCrudController/deny_application/'.$application->id) ?>" class="badge bg-danger">Deny</a>
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -191,5 +200,12 @@
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- =========== Javascript Scripts for Datatable =========  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.bootstrap5.js"></script>
 </body>
 </html>

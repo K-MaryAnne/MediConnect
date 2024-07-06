@@ -49,6 +49,8 @@ $routes->get('doctors/add', 'DoctorCrudController::add');
 $routes->get('doctors/edit/(:num)', 'DoctorCrudController::edit/$1');
 $routes->get('doctors/delete/(:num)', 'DoctorCrudController::delete/$1');
 
+
+
 //$routes->get('applications', 'DoctorCrudController::applications');
 
 $routes->get('applications_view', 'DoctorCrudController::applications_view');
@@ -66,9 +68,18 @@ $routes->get('/DoctorCrudController/accept_application/(:num)', 'DoctorCrudContr
 $routes->get('/DoctorCrudController/deny_application/(:num)', 'DoctorCrudController::deny_application/$1');
 
 
+$routes->post('DoctorCrudController/update_doctor/(:num)', 'DoctorCrudController::update_doctor/$1');
+$routes->post('NurseCrudController/update_nurse/(:num)', 'NurseCrudController::update_nurse/$1');
+
+
 $routes->get('manage-users', 'DoctorCrudController::manage_users');
 $routes->get('view-doctors', 'DoctorCrudController::view_doctors');
 $routes->get('view-patients', 'DoctorCrudController::view_patients');
+
+
+$routes->get('/view_doctors', 'DoctorCrudController::view_doctors');
+$routes->get('/view_nurses', 'NurseCrudController::view_nurses');
+
 
 $routes->get('admin/profile', 'AdminController::profile');
 
