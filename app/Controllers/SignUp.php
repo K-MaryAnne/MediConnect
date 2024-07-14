@@ -42,8 +42,45 @@ class SignUp extends BaseController
         return view('login', $data);
     }
 
-    public function authenticate()
-    {
+    // public function authenticate()
+    // {
+    //     $email = $this->request->getPost('email');
+    //     $password = $this->request->getPost('password');
+    
+    //     $model = new UserModel();
+    //     $user = $model->where('Email', $email)->first();
+    
+    //     if ($user) {
+    //         if (password_verify($password, $user['Password'])) {
+    //             if ($user['Status'] == 1) {
+    //                 $this->setUserSession($user);
+    //                 switch ($user['Role_ID']) {
+    //                     case 1:
+    //                         return redirect()->to('/manage-users');
+    //                     case 2:
+    //                         return redirect()->to('/dashboard');
+    //                     case 3:
+    //                         return redirect()->to('/dashboard');
+    //                     case 4:
+    //                         return redirect()->to('/dashboard');
+    //                     default:
+    //                         return redirect()->to('/login')->with('error', 'Role not recognized');
+    //                 }
+    //             } else {
+    //                 return redirect()->back()->with('error', 'Your account is not activated. Please check your email.');
+    //             }
+    //         } else {
+    //             return redirect()->back()->with('error', 'Invalid password');
+    //         }
+    //     } else {
+    //         return redirect()->back()->with('error', 'User not found');
+    //     }
+    // }
+
+
+
+
+    public function authenticate() {
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
     
@@ -53,18 +90,22 @@ class SignUp extends BaseController
         if ($user) {
             if (password_verify($password, $user['Password'])) {
                 if ($user['Status'] == 1) {
-                    $this->setUserSession($user);
-                    switch ($user['Role_ID']) {
-                        case 1:
-                            return redirect()->to('/manage-users');
-                        case 2:
-                            return redirect()->to('/dashboard');
-                        case 3:
-                            return redirect()->to('/dashboard');
-                        case 4:
-                            return redirect()->to('/dashboard');
-                        default:
-                            return redirect()->to('/login')->with('error', 'Role not recognized');
+                    if ($user['Role_ID'] != 5) {  // Check if the user is not suspended
+                        $this->setUserSession($user);
+                        switch ($user['Role_ID']) {
+                            case 1:
+                                return redirect()->to('/manage-users');
+                            case 2:
+                                return redirect()->to('/dashboard');
+                            case 3:
+                                return redirect()->to('/dashboard');
+                            case 4:
+                                return redirect()->to('/dashboard');
+                            default:
+                                return redirect()->to('/login')->with('error', 'Role not recognized');
+                        }
+                    } else {
+                        return redirect()->back()->with('error', 'Your account is suspended.');
                     }
                 } else {
                     return redirect()->back()->with('error', 'Your account is not activated. Please check your email.');
@@ -76,6 +117,7 @@ class SignUp extends BaseController
             return redirect()->back()->with('error', 'User not found');
         }
     }
+    
     
     /*public function authenticate(): Defines the authenticate method, which handles user login.
     $email = $this->request->getPost('email');: Retrieves the email from the login form.

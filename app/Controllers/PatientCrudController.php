@@ -99,6 +99,8 @@ class PatientCrudController extends BaseController
         $validationRules = [
             'First_Name' => 'required|min_length[3]|max_length[50]',
             'Last_Name' => 'required|min_length[3]|max_length[50]',
+            'Specialisation' => 'required|min_length[3]|max_length[100]',
+            'Years_of_Experience' => 'required|integer',
             'Email' => 'required|valid_email',
             'status' => 'required|in_list[active,inactive]',
         ];
@@ -112,6 +114,8 @@ class PatientCrudController extends BaseController
         $data = [
             'First_Name' => $this->request->getVar('First_Name'),
             'Last_Name' => $this->request->getVar('Last_Name'),
+            'Specialisation' => $this->request->getVar('Specialisation'),
+            'Years_of_Experience' => $this->request->getVar('Years_of_Experience'),
             'Email' => $this->request->getVar('Email'),
             'status' => $this->request->getVar('status'),
         ];
@@ -129,16 +133,48 @@ class PatientCrudController extends BaseController
     
 
 
-    //Delete patient
-    public function delete_patient($id) {
-        if ($this->userModel->delete_patient($id)) {
-            return redirect()->to('/view_patients')->with('success', 'Patient deleted successfully');
-        } else {
-            return redirect()->back()->with('error', 'Failed to delete patient');
-        }
+//     // Suspend patient
+// public function suspend_patient($id) {
+//     if ($this->userModel->suspend_patient($id)) {
+//         return redirect()->to('/view_patients')->with('success', 'Patient suspended successfully');
+//     } else {
+//         return redirect()->back()->with('error', 'Failed to suspend patient');
+//     }
+// }
+
+// public function view_suspended_patients() {
+//     $data['suspended_patients'] = $this->userModel->getSuspendedPatients();
+//     echo view('suspend_patients_view', $data);
+// }
+
+// public function restore_patient($id) {
+//     if ($this->userModel->restorePatient($id)) {
+//         return redirect()->to(base_url('view-suspended-patients'))->with('success', 'Patient restored successfully');
+//     } else {
+//         return redirect()->to(base_url('view-suspended-patients'))->with('error', 'Failed to restore patient');
+//     }
+// }
+
+public function delete_patient($id) {
+    if ($this->userModel->delete_patient($id)) {
+        return redirect()->to('/view-patients')->with('success', 'Patient deleted successfully');
+    } else {
+        return redirect()->back()->with('error', 'Failed to delete patient');
     }
+}
 
     
+
+    
+    public function search()
+    {
+        $query = $this->request->getGet('query');
+        $results = $this->userModel->searchPatient($query);
+        
+        return view('patient_search_results', ['results' => $results]);
+    }
+
+
 
     // Profile view and update
     public function profile($id) {

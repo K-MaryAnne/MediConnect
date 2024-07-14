@@ -143,7 +143,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="<?= site_url('PatientCrudController/view_patients') ?>" class="btn btn-secondary">Cancel</a>
+                    <a href="<?= site_url('view-patients') ?>" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>

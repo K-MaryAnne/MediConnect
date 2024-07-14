@@ -39,7 +39,7 @@ class NurseCrudController extends BaseController
     // public function edit_nurse($id) {
     //     $nurse = $this->userModel->get_nurse_by_id($id);
     //     if (!$nurse) {
-    //         return redirect()->back()->with('error', 'Nurse not found');
+    //         return redirect()->back()->with('error', 'nurse not found');
     //     }
 
     //     $data['nurse'] = $nurse;
@@ -85,7 +85,7 @@ class NurseCrudController extends BaseController
     //         ];
 
     //         if ($this->userModel->update_nurse($id, $data)) {
-    //             return redirect()->to('/view_nurses')->with('success', 'nurse updated successfully');
+    //             return redirect()->to('/view_nurses')->with('success', 'Nurse updated successfully');
     //         } else {
     //             return redirect()->back()->with('error', 'Failed to update nurse');
     //         }
@@ -133,17 +133,114 @@ class NurseCrudController extends BaseController
     
 
 
-    //Delete nurse
-    public function delete_nurse($id) {
-        if ($this->userModel->delete_nurse($id)) {
-            return redirect()->to('/view_nurses')->with('success', 'Nurse deleted successfully');
-        } else {
-            return redirect()->back()->with('error', 'Failed to delete nurse');
-        }
+    // Suspend nurse
+public function suspend_nurse($id) {
+    if ($this->userModel->suspend_nurse($id)) {
+        return redirect()->to('/view_nurses')->with('success', 'Nurse suspended successfully');
+    } else {
+        return redirect()->back()->with('error', 'Failed to suspend nurse');
     }
+}
+
+public function view_suspended_nurses() {
+    $data['suspended_nurses'] = $this->userModel->getSuspendedNurses();
+    echo view('suspend_nurses_view', $data);
+}
+
+public function restore_nurse($id) {
+    if ($this->userModel->restoreNurse($id)) {
+        return redirect()->to(base_url('view-suspended-nurses'))->with('success', 'Nurse restored successfully');
+    } else {
+        return redirect()->to(base_url('view-suspended-nurses'))->with('error', 'Failed to restore nurse');
+    }
+}
+
+   
+
+    // View User Applications
+    // public function applications_view() {
+    //     $data['applications'] = $this->userModel->get_pending_applications();
+    //     return view('applications_view', $data);
+    // }
+
+    public function applications_view() {
+        $db = db_connect();
+        $query = $db->query("SELECT * FROM user_applications WHERE status = 'pending'");
+        $data['applications'] = $query->getResult();
+        return view('applications_view', $data);
+    }
+    
+    // Accept application
+    public function accept_application($application_id) {
+        // $this->db->transStart();
+
+        $application = $this->userModel->get_application_by_id($application_id);
+        
+        if ($application) {
+            $data = [
+                'User_ID' => $application->User_ID,
+                'First_Name' => $application->first_name,
+                'Last_Name' => $application->last_name,
+                'Specialisation' => $application->Specialisation,
+                'Years_of_Experience' => $application->Years_of_Experience,
+                'Rating' => 0,
+                'status' => 'active'
+            ];
+            
+            if ($application->role_applied_for == 'Doctor') {
+                $data['Role_ID'] = 2; // Assuming 2 is the Role_ID for doctors
+                $this->userModel->insert_doctor($data);
+            } elseif ($application->role_applied_for == 'Nurse') {
+                $data['Role_ID'] = 3; // Assuming 3 is the Role_ID for nurses
+                $this->userModel->insert_nurse($data);
+            }
+
+            // Update role in the users table
+        $this->userModel->update_user_role($application->User_ID, $data['Role_ID']);
+            
+            // Update application status to 'accepted'
+            $this->userModel->update_application_status($application_id, 'accepted');
+            
+        } else {
+            log_message('error', 'Application not found: ID ' . $application_id);
+        }
+
+        // if ($this->db->transStatus() === FALSE) {
+        //     // If something went wrong, roll back the transaction
+        //     return redirect()->back()->with('error', 'Failed to process application');
+        // }
+        
+        return redirect()->to('/NurseCrudController/applications_view');
+    }
+    
+    // Deny application
+    public function deny_application($application_id) {
+        $this->db->transStart();
+    
+        // Update application status to 'denied'
+        $this->userModel->update_application_status($application_id, 'denied');
+            
+        $this->db->transComplete();
+    
+        if ($this->db->transStatus() === FALSE) {
+            // If something went wrong, roll back the transaction
+            return redirect()->back()->with('error', 'Failed to deny application');
+        }
+    
+        return redirect()->to('/NurseCrudController/applications_view')->with('success', 'Application denied successfully');
+    }
+    
 
     
-       
+    public function search()
+    {
+        $query = $this->request->getGet('query');
+        $results = $this->userModel->searchNurse($query);
+        
+        return view('nurse_search_results', ['results' => $results]);
+    }
+
+
 
     // Profile view and update
     public function profile($id) {

@@ -109,11 +109,22 @@
                 </div>
 
                 <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
+    <label>
+        <input type="text" id="search-input" placeholder="Search for Nurse">
+        <ion-icon name="search-outline"></ion-icon>
+    </label>
+</div>
+
+<!-- Add a button to trigger the search -->
+<button onclick="searchNurse()">Search</button>
+
+<script>
+function searchNurse() {
+    var query = document.getElementById('search-input').value;
+    window.location.href = '<?= base_url('nurse/search') ?>?query=' + query;
+}
+</script>
+
 
                 <div class="user">
                 <img src="imgs/admin.png" alt="">
@@ -169,7 +180,9 @@
 
 <!-- ================ Nurses List ================= -->
 <div class="container mt-5">
-    <h2>Nurses List</h2>
+    <h2>Nurses List</h2> 
+    <a href="<?= site_url('view-suspended-nurses') ?>" class="btn btn-warning">View Suspended Nurses</a>
+   
     <?php if (session()->getFlashdata('success')) : ?>
         <div class="alert alert-success">
             <?= session()->getFlashdata('success') ?>
@@ -181,6 +194,7 @@
         </div>
     <?php endif; ?>
     <!-- <table class="table table-bordered"> -->
+    
     <table id="example" class="table table-striped nowrap" style="width:100%">    
         <thead>
             <tr>
@@ -188,8 +202,8 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Specialisation</th>
-                <!-- <th>Years of Experience</th>  -->
-                <th>Email</th>
+
+                <!-- <th>Email</th> -->
                 <!-- <th>Status</th> -->
                 <!-- <th>Actions</th> -->
             </tr>
@@ -201,11 +215,11 @@
                     <td><?= $nurse->First_Name ?></td>
                     <td><?= $nurse->Last_Name ?></td>
                     <td><?= $nurse->Specialisation ?></td>
-                    <td><?= $nurse->Email ?></td>
+                   
                   
                     <td>
                         <a href="<?= site_url('NurseCrudController/edit_nurse/' . $nurse->User_ID) ?>" class="btn btn-primary">Edit</a>
-                        <a href="<?= site_url('NurseCrudController/delete_nurse/' . $nurse->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this nurse?');">Delete</a>
+                        <a href="<?= site_url('NurseCrudController/suspend_nurse/' . $nurse->User_ID) ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to suspend this nurse?');">Suspend</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

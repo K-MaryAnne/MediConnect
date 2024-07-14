@@ -108,13 +108,23 @@
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
 
+                
                 <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
+    <label>
+        <input type="text" id="search-input" placeholder="Search for Patient">
+        <ion-icon name="search-outline"></ion-icon>
+    </label>
+</div>
 
+<!-- Add a button to trigger the search -->
+<button onclick="searchPatient()">Search</button>
+
+<script>
+function searchPatient() {
+    var query = document.getElementById('search-input').value;
+    window.location.href = '<?= base_url('doctor/search') ?>?query=' + query;
+}
+</script>
                 <div class="user">
                 <img src="imgs/admin.png" alt="">
                 </div>

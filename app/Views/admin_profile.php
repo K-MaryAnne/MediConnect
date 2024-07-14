@@ -3,114 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Healthcare Provider Profile</title>
+    <title>Admin Profile</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-    <link href="<?= base_url('public/css/userprofile.css') ?>" rel="stylesheet">
+    <!-- Include any additional stylesheets or scripts here -->
 </head>
 <body>
-<div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                <span class="font-weight-bold">Edogaru</span>
-                <span class="text-black-50">edogaru@mail.com.my</span>
-                <span> </span>
-            </div>
-        </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Profile Settings</h4>
-                </div>
-                <form action="<?= base_url('profile/upload_image') ?>" method="post" enctype="multipart/form-data">
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label class="labels">Name</label>
-                            <input type="text" class="form-control" name="first_name" placeholder="First Name" value="">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="labels">Surname</label>
-                            <input type="text" class="form-control" name="last_name" value="" placeholder="Surname">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <label class="labels">Mobile Number</label>
-                            <input type="text" class="form-control" name="mobile_number" placeholder="Enter Phone Number" value="">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Address</label>
-                            <input type="text" class="form-control" name="address" placeholder="Enter Address" value="">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Town</label>
-                            <input type="text" class="form-control" name="town" placeholder="Enter Town" value="">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Email</label>
-                            <input type="text" class="form-control" name="email" placeholder="Enter Email" value="">
-                        </div>
-                        <div class="col-md-12">
-                            <label class="labels">Date of Birth</label>
-                            <div class="d-flex">
-                                <select class="form-control mr-1" id="day" name="day" style="width: auto;">
-                                    <option value="">Day</option>
-                                    <!-- Generate days 1-31 -->
-                                    <script>
-                                        for (let d = 1; d <= 31; d++) {
-                                            document.write('<option value="' + d + '">' + d + '</option>');
-                                        }
-                                    </script>
-                                </select>
-                                <select class="form-control mr-1" id="month" name="month" style="width: auto;">
-                                    <option value="">Month</option>
-                                    <!-- Generate months 1-12 -->
-                                    <script>
-                                        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                                        for (let m = 0; m < 12; m++) {
-                                            document.write('<option value="' + (m+1) + '">' + monthNames[m] + '</option>');
-                                        }
-                                    </script>
-                                </select>
-                                <select class="form-control" id="year" name="year" style="width: auto;">
-                                    <option value="">Year</option>
-                                    <!-- Generate years from 1900 to current year -->
-                                    <script>
-                                        const currentYear = new Date().getFullYear();
-                                        for (let y = currentYear; y >= 1900; y--) {
-                                            document.write('<option value="' + y + '">' + y + '</option>');
-                                        }
-                                    </script>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Admin Profile</h3>
+                        <form action="<?= base_url('admin/updateProfile') ?>" method="post" enctype="multipart/form-data">
+                            <!-- Display error messages if any -->
+                            <?php if (session()->has('error')): ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?= session('error') ?>
+                                </div>
+                            <?php endif; ?>
 
-    
+                            <!-- Display success messages if any -->
+                            <?php if (session()->has('success')): ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?= session('success') ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?= $admin->First_Name ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?= $admin->Last_Name ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="<?= $admin->Email ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="mobile_number" class="form-label">Mobile Number</label>
+                                <input type="text" class="form-control" id="mobile_number" name="mobile_number" value="<?= $admin->Phone_Number ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" value="<?= $admin->Address ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="town" class="form-label">Town</label>
+                                <input type="text" class="form-control" id="town" name="town" value="<?= $admin->Town ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="<?= $admin->Date_of_Birth ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="profile_image" class="form-label">Profile Image</label>
+                                <input type="file" class="form-control" id="profile_image" name="profile_image">
+                                <?php if (!empty($admin->Profile_Photo)): ?>
+                                    <img src="<?= base_url($admin->Profile_Photo) ?>" class="mt-2" style="max-width: 200px;" alt="Profile Photo">
+                                <?php endif; ?>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Profile</button>
+                        </form>
                     </div>
-                    <div class="mt-3">
-                        <label class="labels">Profile Image</label>
-                        <input type="file" class="form-control" name="profile_image">
-                    </div>
-                    <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>
-                <div class="col-md-12"><label class="labels">Experience in healthcare</label><input type="text" class="form-control" placeholder="Experience" value=""></div> <br>
-                <div class="col-md-12"><label class="labels">Additional Details</label><textarea class="form-control" placeholder="Additional Details"></textarea></div><br>
-            </div>
-        </div>
         </div>
     </div>
-</div>
 </body>
 </html>

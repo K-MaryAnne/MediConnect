@@ -121,11 +121,11 @@
             <?= session()->getFlashdata('error') ?>
         </div>
     <?php endif; ?>
-    <form action="<?= site_url('NurseCrudController/update_nurse/'.$Nurse->User_ID) ?>" method="post">
+    <form action="<?= site_url('NurseCrudController/update_nurse/'.$nurse->User_ID) ?>" method="post">
                     <?= csrf_field() ?>
                     <div class="form-group">
                         <label for="First_Name">First Name</label>
-                        <input type="text" class="form-control" id="First_Name" name="First_Name" value="<?= $Nurse->First_Name ?>" required>
+                        <input type="text" class="form-control" id="First_Name" name="First_Name" value="<?= $nurse->First_Name ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="Last_Name">Last Name</label>
@@ -151,7 +151,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="<?= site_url('NurseCrudController/view_nurses') ?>" class="btn btn-secondary">Cancel</a>
+                    <a href="<?= site_url('view-nurses') ?>" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>
